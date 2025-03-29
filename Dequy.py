@@ -5,7 +5,7 @@ def de_quy_tinh_giai_thua(n) :
     
     return n*de_quy_tinh_giai_thua(n-1)
 # nhap so
-so= int(input(" nhap so de : "))
+so= int(input(" nhap số de : "))
 if so < 0 :
     print(" khong co giai thua cho so am ")
 else :
