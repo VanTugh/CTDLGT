@@ -18,6 +18,6 @@ def ex_clit(a,b) :
        x1= a+x1
     return x1
 
-print(ex_clit(4,6))
+print(ex_clit(6, 11))
 
 
