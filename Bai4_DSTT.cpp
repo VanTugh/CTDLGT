@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <string>
 using namespace std;
-# define MAX 6
+# define MAX 8
 struct SinhVien{
     int maSV;
     string hoTen;
@@ -115,7 +115,23 @@ int aDD_last_LiSt(List &L)
     return 1;
   }
 }
+// hàm sắp bằng phương pháp lựa chọn 
+void lua_chon(List &L) {
+    for (int i = 0; i <= L.count; i++) {
+        int minI = i;  // Giả sử phần tử i là phần tử có tên nhỏ nhất
+        for (int j = i + 1; j <= L.count; j++) {  // Duyệt qua các phần tử còn lại
+            if (L.sv[j].hoTen < L.sv[minI].hoTen)  // So sánh tên sinh viên
+                minI = j;  // Cập nhật chỉ số phần tử nhỏ nhất
+        }
 
+        // Nếu tìm thấy phần tử nhỏ hơn thì hoán đổi
+        if (minI != i) {
+            SinhVien temp = L.sv[i];  // Hoán đổi phần tử i và minI
+            L.sv[i] = L.sv[minI];
+            L.sv[minI] = temp;
+        }
+    }
+}
 int main() {
     List L;
     creat(L);
@@ -135,6 +151,8 @@ hienThi(L);
 rEmove(L,2);
 cout << "Danh sach sau khi them:\n";
     hienThi(L);
-
+lua_chon(L);
+cout << "Danh sach sau khi sap:\n";
+    hienThi(L);
     return 0;
 }
