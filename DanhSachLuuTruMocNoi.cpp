@@ -123,7 +123,6 @@ void iNsert(TRO &L)
         SinhVien svmoi;
         cout << "Nhap thong tin sinh vien can chen:\n";
         nhap_Sinh_Vien(svmoi);
-        
         P->sv = svmoi;  // Sửa lỗi ở đây
         P->next = Q->next;
         Q->next = P;
