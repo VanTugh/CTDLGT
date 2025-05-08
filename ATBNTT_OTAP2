@@ -1,0 +1,58 @@
+import numpy as np
+def UCL(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+def ex_clit(a, b):
+    if UCL(a, b) != 1:
+        return None  # Không tồn tại nghịch đảo
+    else:
+        r0, r1 = b, a
+        x0, x1 = 0, 1
+        while r1 != 0:
+            q = r0 // r1
+            r0, r1 = r1, r0 % r1
+            x0, x1 = x1, x0 - q * x1
+        if x0 < 0:
+            x0 += b
+        return x0
+def chuyen_chu_thanh_so(c):
+    return ord(c.upper())-ord('A')
+def chuyen_so_thanh_chu(pos):
+    return chr(pos%26 + ord('A'))
+
+def HILL(text,key):
+    ket_qua=''
+    if len(text)%2 !=0:
+        text +='X'   # neu k phai 2x2 thi them X
+    for i in range(0,len(text),2):
+        vector=[chuyen_chu_thanh_so(text[i]),chuyen_chu_thanh_so(text[i+1])]
+        # tinh tich 2 ma tran\
+        res=np.dot(key,vector)%26
+        ket_qua += chuyen_so_thanh_chu(res[0]) + chuyen_so_thanh_chu(res[1])
+    return ket_qua
+def ma_tran_nghich_dao(K):
+    det=int(round(np.linalg.det(K)))
+    det_nghich_dao=det%26
+    inv_det=ex_clit(det_nghich_dao,26)
+    if inv_det is None:
+        raise ValueError("khong co nghich dao")
+# tao ma tran phu hop
+    ma_tran=np.array([[K[1][1],-K[0][1]],[-K[1][0],K[0][0]]])
+    ma_tran_mod=ma_tran%26
+    return (inv_det*ma_tran_mod)%26
+def giai_ma(cipher,K):
+    K_inv=ma_tran_nghich_dao(K)
+    return HILL(cipher,K_inv)
+
+
+
+if __name__ == "__main__":
+    #test 
+    key = np.array([[3, 3], [2,5]])
+    text='TUNG'
+    cipher=HILL(text,key)
+    print(cipher)
+    de=giai_ma(cipher,key)
+    print(de)

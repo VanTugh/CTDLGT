@@ -1,0 +1,54 @@
+import random
+
+def GCD(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+def gen_key(q):
+    key = random.randint(2, q - 2)
+    while GCD(q, key) != 1:
+        key = random.randint(2, q - 2)
+    return key
+
+def binary(a, b, n):
+    f = 1
+    a = a % n
+    b_bin = bin(b)[2:]
+    for bit in b_bin:
+        f = (f * f) % n
+        if bit == '1':
+            f = (f * a) % n
+    return f
+
+def encrypt_ELGAMAL_number(message, q, h, g):
+    k = gen_key(q)
+    s = binary(h, k, q)
+    p = binary(g, k, q)
+    c = s * message
+    return c, p
+
+def decrypt_ELGAMAL_number(c, p, key, q):
+    h = binary(p, key, q)
+    m = c // h
+    return m
+
+def main():
+    message = int(input("Nhập số nguyên để mã hóa: "))
+    print("Thông điệp ban đầu:", message)
+
+    q = 104729
+    g = 2
+    key = gen_key(q)
+    h = binary(g, key, q)
+
+    print(f"Khóa riêng: {key}")
+    print(f"Khóa công khai (q, g, h): ({q}, {g}, {h})")
+
+    c, p = encrypt_ELGAMAL_number(message, q, h, g)
+    print("Mã hóa:", c)   
+    m = decrypt_ELGAMAL_number(c, p, key, q)
+    print("Giải mã:", m)
+
+if __name__ == "__main__":
+    main()

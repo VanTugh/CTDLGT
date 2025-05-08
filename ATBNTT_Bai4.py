@@ -11,10 +11,3 @@ print(mod_inverse(6,11))
 a, m = 6, 11
 result = mod_inverse(a, m)
 print(f"{a}^-1 mod {m} = {result}")
-
-
-
-
-
-
-    

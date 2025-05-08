@@ -42,7 +42,7 @@ def ex_clitt(a,b):
         if x1<0:
             x1=a+x1
     return x1
-# thuat toan a mod b theo binary
+# thuat toan a mod b theo binary a^b mod n
 def binary_T(a,b,n):
     f=1
     a=a%n

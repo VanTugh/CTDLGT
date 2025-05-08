@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1745392323 source:d:\nguyenvantung_2023601002_ctdlgt\baitap\main.cpp
+	<iostream>
+	<iomanip>
+	<string>
+
