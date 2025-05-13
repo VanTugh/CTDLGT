@@ -54,3 +54,110 @@ print("Mã hóa:", ma_hoa)
 
 giai_ma = giai_ma_hill(ma_hoa, K)
 print("Giải mã:", giai_ma)
+
+
+
+
+
+# UCLN
+import numpy as np
+def UCL(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+# Thuật toán Euclid mở rộng
+def ex_clit(a, b):
+    if UCL(a, b) != 1:
+        return None
+    r0, r1 = b, a
+    x0, x1 = 0, 1
+    while r1 != 0:
+        q = r0 // r1
+        r0, r1 = r1, r0 % r1
+        x0, x1 = x1, x0 - q * x1
+    if x0 < 0:
+        x0 += b
+    return x0
+
+# Thuật toán a^b mod n (Binary Exponentiation)
+def binary_T(a, b, n):
+    f = 1
+    a = a % n
+    b_bin = bin(b)[2:]
+    for bit in b_bin:
+        f = (f * f) % n
+        if bit == '1':
+            f = (f * a) % n
+    return f
+
+# Caesar Cipher
+def chuyen_ki_tu_thanh_so(c):
+    return ord(c.upper()) - ord('A')
+
+def chuyen_so_thanh_ki_tu(c, is_upper):
+    base = ord('A') if is_upper else ord('a')
+    return chr((c % 26) + base)
+
+def ma_hoa_Caesar(text, k):
+    ketqua = ""
+    for c in text:
+        if c.isalpha():
+            pos = chuyen_ki_tu_thanh_so(c)
+            new_pos = (k + pos) % 26
+            ketqua += chuyen_so_thanh_ki_tu(new_pos, c.isupper())
+        else:
+            ketqua += c
+    return ketqua
+
+def giai_ma_Caesar(text, k):
+    return ma_hoa_Caesar(text, -k)
+
+# Affine Cipher
+def chuyen_AFF(c):
+    return ord(c.upper()) - ord('A')
+
+def chuyen_2_AFF(n, is_upper):
+    base = ord('A') if is_upper else ord('a')
+    return chr((n % 26) + base)
+
+def ma_hoa_AFFINE(text, a, b):
+    ketqua = ""
+    for c in text:
+        if c.isalpha():
+            pos = chuyen_AFF(c)
+            new_pos = (a * pos + b) % 26
+            ketqua += chuyen_2_AFF(new_pos, c.isupper())
+        else:
+            ketqua += c
+    return ketqua
+
+def giai_ma_AFFINE(text, a, b):
+    ketqua = ""
+    a_inv = ex_clit(a, 26)
+    if a_inv is None:
+        return "Không tồn tại nghịch đảo modular"
+    for c in text:
+        if c.isalpha():
+            pos = chuyen_AFF(c)
+            new_pos = (a_inv * (pos - b)) % 26
+            ketqua += chuyen_2_AFF(new_pos, c.isupper())
+        else:
+            ketqua += c
+    return ketqua
+
+# ==========================
+# Test với text = "TUGH"
+text = "TUGH"
+print("==== Caesar Cipher ====")
+caesar_mahoa = ma_hoa_Caesar(text, 3)
+print("Mã hóa Caesar:", caesar_mahoa)
+print("Giải mã Caesar:", giai_ma_Caesar(caesar_mahoa, 3))
+
+print("\n==== Affine Cipher ====")
+a, b = 5, 8  # a phải nguyên tố cùng 26
+aff_mahoa = ma_hoa_AFFINE(text, a, b)
+print("Mã hóa Affine:", aff_mahoa)
+print("Giải mã Affine:", giai_ma_AFFINE(aff_mahoa, a, b))
+def nghich_dao_ma_tran(K):
+    det = int(round(np.linalg.det(K)))
